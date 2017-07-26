@@ -8,15 +8,18 @@ typedef enum {
 	OR = __LINE__,
 	NOT = __LINE__,
 	XOR = __LINE__,
+
 	READ = __LINE__,
 	CWRITE = __LINE__,
 	SWRITE = __LINE__,
 	NWRITE = __LINE__,
+
 	COPY = __LINE__,
 	POP = __LINE__,
 	DUP = __LINE__,
 	SWAP = __LINE__,
 	ROTATE = __LINE__,
+	
 	JEQ = __LINE__,
 	JNEQ = __LINE__,
 	JPOS = __LINE__,

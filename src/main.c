@@ -18,14 +18,7 @@ int main(int argc, char const *argv[]) {
     fclose(currentFile);
     currentFile = NULL;
 
-    /* TODO: execute code found in the bytecode vector */
-    size_t i;
-    for (i = 0; i < bytecode->size - 1; i++) {
-        printf("%u, ", bytecode->arrp[i]);
-    }
-    printf("%u\n", bytecode->arrp[i]);
-
-    vector_char_destroy(bytecode);
+    interpret();
 
     return EXIT_SUCCESS;
 }

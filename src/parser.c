@@ -24,6 +24,15 @@ void parse() {
         parseError("out of memory -- program size too large.");
     }
 
+    /* ignore shebang line (if it exists) */
+    if ((lastCharRead = getc(currentFile)) == '#' &&
+        (lastCharRead = getc(currentFile) == '!')) {
+        while (getc(currentFile) != '\n');
+    }
+    else {
+        ungetc(lastCharRead, currentFile);
+    }
+
     while (true) {
         switch (getNextVowel()) {
             case VOWEL_A:
@@ -193,16 +202,16 @@ int parseNum() {
     parsedNum = 0, i = 0;
     while (i++ < 4) {
         switch (match(VOWEL_A | VOWEL_E | VOWEL_I | VOWEL_O | VOWEL_U)) {
-            case VOWEL_A:
+            case VOWEL_E:
                 parsedNum = parsedNum * 5 + 0;
                 break;
-            case VOWEL_E:
+            case VOWEL_A:
                 parsedNum = parsedNum * 5 + 1;
                 break;
-            case VOWEL_I:
+            case VOWEL_O:
                 parsedNum = parsedNum * 5 + 2;
                 break;
-            case VOWEL_O:
+            case VOWEL_I:
                 parsedNum = parsedNum * 5 + 3;
                 break;
             case VOWEL_U:

@@ -1,29 +1,31 @@
 CC = gcc
 
-CFLAGS = -g -Wall -ansi -Wextra
+CFLAGS = -g -ansi -Wall -Wpedantic -Wextra
 
 DEPDIR = include
-_DEPS = block.h bool.h error.h instructions.h main.h parser.h stack_block.h stack_char.h vector_char.h
+_DEPS = block.h bool.h error.h instructions.h main.h parser.h stack_block.h stack_char.h vector_char.h vm.h
 DEPS = $(patsubst %,$(DEPDIR)/%,$(_DEPS))
 
 SRCDIR = src
 
 ODIR = obj
-_OBJ = error.o main.o parser.o stack_block.o stack_char.o vector_char.o
+_OBJ = error.o main.o parser.o stack_block.o stack_char.o vector_char.o vm.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
+
+PROG_NAME = vowels
 
 .PHONY: clean fresh all
 
-all: vowels
+all: $(PROG_NAME)
 
-vowels: $(OBJ)
-	$(CC) $(CFLAGS) $^ -o vowels
+$(PROG_NAME): $(OBJ)
+	$(CC) $(CFLAGS) $^ -o $(PROG_NAME)
 
 $(ODIR)/%.o: $(SRCDIR)/%.c $(DEPS)
 	$(CC) -c $(CFLAGS) -o $@ $< -I$(DEPDIR)
 	@echo
 
 clean:
-	$(RM) $(ODIR)/*.o *~; $(RM) vowels
+	$(RM) $(ODIR)/*.o *~; $(RM) $(PROG_NAME)
 
 fresh: clean all

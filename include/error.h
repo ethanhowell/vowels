@@ -4,5 +4,6 @@
 #include <stdio.h>
 
 void syntax_error(size_t line, size_t character, const char* message);
+void runtime_error(const char* message);
 
 #endif

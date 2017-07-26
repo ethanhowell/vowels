@@ -5,6 +5,7 @@
 #include "bool.h"
 #include "vector_char.h"
 #include "parser.h"
+#include "vm.h"
 
 
 extern FILE* currentFile;
