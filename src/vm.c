@@ -339,11 +339,49 @@ void handleSWRITE() {
     }
 }
 
-/* completed to here */
-
 void handleNWRITE() {
-
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!(stack_a->size))
+                interpret_error("stack a is empty!");
+            printf("%d", stack_char_pop(stack_a));
+            break;
+        case STACK_E:
+            if (!(stack_e->size))
+                interpret_error("stack e is empty!");
+            printf("%d", stack_char_pop(stack_e));
+            break;
+        case REGISTER_I:
+            printf("%d", register_i);
+            break;
+        case REGISTER_O:
+            printf("%d", register_o);
+            break;
+        case REGISTER_U:
+            printf("%d", register_u);
+            break;
+        case STACK_A_SIZE:
+            printf("%d", stack_a->size & UCHAR_MAX);
+            break;
+        case STACK_E_SIZE:
+            printf("%d", stack_e->size & UCHAR_MAX);
+            break;
+        case OVERFLOW:
+            printf("%d", overflow_register);
+            break;
+        case UNDERFLOW:
+            printf("%d", underflow_register);
+            break;
+        case IO_EOF:
+            printf("%d", eof_register);
+            break;
+        case NUMBER:
+            printf("%d", bytecode->arrp[programCounter++]);
+            break;
+    }
 }
+
+/* completed to here */
 
 void handleCOPY() {
 
