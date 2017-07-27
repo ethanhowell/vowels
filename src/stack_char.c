@@ -1,39 +1,69 @@
 #include "stack_char.h"
 #include <stdlib.h>
-#include "error.h"
+#include <assert.h>
 
-stack_char* stack_char_create(void) {
-	stack_char* self = malloc(sizeof(stack_char));
+#ifndef _SIZE_MAX_DEF
+#define _SIZE_MAX_DEF
+#define SIZE_MAX (~(size_t)0)
+#endif
+
+unsigned char* stack_char_create(void) {
+	unsigned char* self = malloc(sizeof(unsigned char));
 	if (self == NULL) {
 		return NULL;
 	}
 
-	self->vec = vector_char_create();
+	self->capacity = DEFAULT_INITIAL_CAPACITY;
+
+	self->arrp = malloc(self->capacity * sizeof(Block));
+	if (self->arrp == NULL) {
+		return NULL;
+	}
+
+	self->size = 0;
 
 	return self;
 }
 
-bool stack_char_push(stack_char* self, unsigned char elem) {
-	return vector_char_push_back(self->vec, elem);
+bool stack_char_push(unsigned char* self, Block value) {
+	if (self->size >= self->capacity) {
+		if (self->capacity < SIZE_MAX / 2) {
+			self->capacity *= 2;
+		}
+		else if (self->capacity == SIZE_MAX) {
+			return false;
+		}
+		else {
+			self->capacity = SIZE_MAX;
+		}
+		self->arrp = realloc(self->arrp, self->capacity);
+		if (self->arrp == NULL) {
+			return false;
+		}
+	}
+	self->arrp[self->size++] = value;
+	return true;
 }
 
-unsigned char stack_char_pop(stack_char* self) {
-	return vector_char_pop_back(self->vec);
+Block stack_char_top(unsigned char* self) {
+	assert (self->size > 0);
+	return self->arrp[self->size];
 }
 
-unsigned char stack_char_top(const stack_char* self) {
-	return vector_char_at(self->vec, vector_char_size(self->vec) - 1);
+Block stack_char_pop(unsigned char* self) {
+	assert (self->size > 0);
+	return self->arrp[--(self->size)];
 }
 
-size_t stack_char_size(const stack_char* self) {
-	return vector_char_size(self->vec);
+size_t stack_char_size(const unsigned char* self) {
+	return self->size;
 }
 
-void stack_char_clear(stack_char* self) {
-	vector_char_clear(self->vec);
+void stack_char_clear(unsigned char* self) {
+	self->size = 0;
 }
 
-void stack_char_destroy(stack_char* self) {
-	vector_char_destroy(self->vec);
+void stack_char_destroy(unsigned char* self) {
+	free(self->arrp);
 	free(self);
 }

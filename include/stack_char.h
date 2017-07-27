@@ -1,11 +1,12 @@
 #ifndef STACK_CHAR_H_
 #define STACK_CHAR_H_
 
-#include "vector_char.h"
 #include <stdlib.h>
 
 typedef struct {
-	vector_char* vec;
+	size_t capacity;
+	size_t size;
+	unsigned char* arrp;
 } stack_char;
 
 stack_char* stack_char_create(void);
