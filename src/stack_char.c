@@ -7,15 +7,18 @@
 #define SIZE_MAX (~(size_t)0)
 #endif
 
-unsigned char* stack_char_create(void) {
-	unsigned char* self = malloc(sizeof(unsigned char));
+
+#define DEFAULT_INITIAL_CAPACITY 10
+
+stack_char* stack_char_create(void) {
+	stack_char* self = malloc(sizeof(stack_char));
 	if (self == NULL) {
 		return NULL;
 	}
 
 	self->capacity = DEFAULT_INITIAL_CAPACITY;
 
-	self->arrp = malloc(self->capacity * sizeof(Block));
+	self->arrp = malloc(self->capacity * sizeof(unsigned char));
 	if (self->arrp == NULL) {
 		return NULL;
 	}
@@ -25,7 +28,7 @@ unsigned char* stack_char_create(void) {
 	return self;
 }
 
-bool stack_char_push(unsigned char* self, Block value) {
+bool stack_char_push(stack_char* self, unsigned char value) {
 	if (self->size >= self->capacity) {
 		if (self->capacity < SIZE_MAX / 2) {
 			self->capacity *= 2;
@@ -45,25 +48,25 @@ bool stack_char_push(unsigned char* self, Block value) {
 	return true;
 }
 
-Block stack_char_top(unsigned char* self) {
+unsigned char stack_char_top(const stack_char* self) {
 	assert (self->size > 0);
 	return self->arrp[self->size];
 }
 
-Block stack_char_pop(unsigned char* self) {
+unsigned char stack_char_pop(stack_char* self) {
 	assert (self->size > 0);
 	return self->arrp[--(self->size)];
 }
 
-size_t stack_char_size(const unsigned char* self) {
+size_t stack_char_size(const stack_char* self) {
 	return self->size;
 }
 
-void stack_char_clear(unsigned char* self) {
+void stack_char_clear(stack_char* self) {
 	self->size = 0;
 }
 
-void stack_char_destroy(unsigned char* self) {
+void stack_char_destroy(stack_char* self) {
 	free(self->arrp);
 	free(self);
 }

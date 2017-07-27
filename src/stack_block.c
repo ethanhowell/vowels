@@ -7,6 +7,9 @@
 #define SIZE_MAX (~(size_t)0)
 #endif
 
+
+#define DEFAULT_INITIAL_CAPACITY 10
+
 stack_block* stack_block_create(void) {
 	stack_block* self = malloc(sizeof(stack_block));
 	if (self == NULL) {
@@ -45,7 +48,7 @@ bool stack_block_push(stack_block* self, Block value) {
 	return true;
 }
 
-Block stack_block_top(stack_block* self) {
+Block stack_block_top(const stack_block* self) {
 	assert (self->size > 0);
 	return self->arrp[self->size];
 }

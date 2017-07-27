@@ -4,7 +4,6 @@
 #include "block.h"
 #include "bool.h"
 
-#define DEFAULT_INITIAL_CAPACITY 10
 
 typedef struct {
 	size_t capacity;
@@ -17,7 +16,7 @@ stack_block* stack_block_create(void);
 
 bool stack_block_push(stack_block* self, Block value);
 
-Block stack_block_top(stack_block* self);
+Block stack_block_top(const stack_block* self);
 
 Block stack_block_pop(stack_block* self);
 

@@ -1,7 +1,7 @@
 #ifndef STACK_CHAR_H_
 #define STACK_CHAR_H_
-
 #include <stdlib.h>
+#include "bool.h"
 
 typedef struct {
 	size_t capacity;
@@ -9,13 +9,14 @@ typedef struct {
 	unsigned char* arrp;
 } stack_char;
 
+
 stack_char* stack_char_create(void);
 
-bool stack_char_push(stack_char* self, unsigned char elem);
-
-unsigned char stack_char_pop(stack_char* self);
+bool stack_char_push(stack_char* self, unsigned char value);
 
 unsigned char stack_char_top(const stack_char* self);
+
+unsigned char stack_char_pop(stack_char* self);
 
 size_t stack_char_size(const stack_char* self);
 
