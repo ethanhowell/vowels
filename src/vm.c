@@ -19,8 +19,97 @@ void interpret() {
         interpret_error("Out of memory!");
     }
 
-    switch (bytecode->arrp[programCounter++]) {
-        /* TODO: handle various instructions here */
+    while (programCounter++ < bytecode->size) {
+        switch (bytecode->arrp[programCounter]) {
+            case ADD:
+                handleADD();
+                break;
+
+            case SUBTRACT:
+                handleSUBTRACT();
+                break;
+
+            case AND:
+                handleAND();
+                break;
+
+            case OR:
+                handleOR();
+                break;
+
+            case NOT:
+                handleNOT();
+                break;
+
+            case XOR:
+                handleXOR();
+                break;
+
+            case READ:
+                handleREAD();
+                break;
+
+            case CWRITE:
+                handleCWRITE();
+                break;
+
+            case SWRITE:
+                handleSWRITE();
+                break;
+
+            case NWRITE:
+                handleNWRITE();
+                break;
+
+            case COPY:
+                handleCOPY();
+                break;
+
+            case POP:
+                handlePOP();
+                break;
+
+            case DUP:
+                handleDUP();
+                break;
+
+            case SWAP:
+                handleSWAP();
+                break;
+
+            case ROTATE:
+                handleROTATE();
+                break;
+
+            case JEQ:
+                handleJEQ();
+                break;
+
+            case JNEQ:
+                handleJNEQ();
+                break;
+
+            case JPOS:
+                handleJPOS();
+                break;
+
+            case JNEG:
+                handleJNEG();
+                break;
+
+            case JNPOS:
+                handleJNPOS();
+                break;
+
+            case JNNEG:
+                handleJNNEG();
+                break;
+
+            case JUMP:
+                handleJUMP();
+                break;
+
+        }
     }
 
     size_t i;
@@ -33,4 +122,197 @@ void interpret() {
     vector_char_destroy(bytecode);
     stack_char_destroy(stack_a);
     stack_char_destroy(stack_e);
+}
+
+void handleADD() {
+    stack_char* const destination;
+    int result;
+
+    /* only possible next values are stacks a and e */
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            destination = stack_a;
+            break
+
+        case STACK_E:
+            destination = stack_e;
+            break;
+    }
+    if (destination->size < 2)
+        runtime_error("destination stack needs to be at least 2 elements tall.");
+
+    result = stack_char_pop(destination) + stack_char_pop(destination);
+    overflow_register = (result > UCHAR_MAX) ? result - UCHAR_MAX : 0;
+    stack_char_push(destination, result & UCHAR_MAX);
+}
+
+void handleSUBTRACT() {
+    stack_char* const destination;
+    int result;
+
+    /* only possible next values are stacks a and e */
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            destination = stack_a;
+            break
+
+        case STACK_E:
+            destination = stack_e;
+            break;
+    }
+    if (destination->size < 2)
+        runtime_error("destination stack needs to be at least 2 elements tall.");
+
+    result = stack_char_pop(destination);
+    result = stack_char_pop(destination) - result;
+    underflow_register = (result < 0) ? -result : 0;
+    stack_char_push(destination, result & UCHAR_MAX);
+}
+
+void handleAND() {
+    stack_char* const destination;
+    int result;
+
+    /* only possible next values are stacks a and e */
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            destination = stack_a;
+            break
+
+        case STACK_E:
+            destination = stack_e;
+            break;
+    }
+    if (destination->size < 2)
+        runtime_error("destination stack needs to be at least 2 elements tall.");
+
+    result = stack_char_pop(destination) & stack_char_pop(destination);
+    stack_char_push(destination, result);
+}
+
+void handleOR() {
+    stack_char* const destination;
+    int result;
+
+    /* only possible next values are stacks a and e */
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            destination = stack_a;
+            break
+
+        case STACK_E:
+            destination = stack_e;
+            break;
+    }
+    if (destination->size < 2)
+        runtime_error("destination stack needs to be at least 2 elements tall.");
+
+    result = stack_char_pop(destination) | stack_char_pop(destination);
+    stack_char_push(destination, result);
+}
+
+void handleNOT() {
+    stack_char* const destination;
+
+    /* only possible next values are stacks a and e */
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            destination = stack_a;
+            break
+
+        case STACK_E:
+            destination = stack_e;
+            break;
+    }
+    if (destination->size < 1)
+        runtime_error("destination stack needs to be at least 1 element tall.");
+
+    stack_char_push(destination, !(stack_char_pop(destination)));
+}
+
+void handleXOR() {
+    stack_char* const destination;
+    int result;
+
+    /* only possible next values are stacks a and e */
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            destination = stack_a;
+            break
+
+        case STACK_E:
+            destination = stack_e;
+            break;
+    }
+    if (destination->size < 2)
+        runtime_error("destination stack needs to be at least 2 elements tall.");
+
+    result = stack_char_pop(destination) ^ stack_char_pop(destination);
+    stack_char_push(destination, result);
+}
+
+/* completed to here */
+
+void handleREAD() {
+
+}
+
+void handleCWRITE() {
+
+}
+
+void handleSWRITE() {
+
+}
+
+void handleNWRITE() {
+
+}
+
+void handleCOPY() {
+
+}
+
+void handlePOP() {
+
+}
+
+void handleDUP() {
+
+}
+
+void handleSWAP() {
+
+}
+
+void handleROTATE() {
+
+}
+
+void handleJEQ() {
+
+}
+
+void handleJNEQ() {
+
+}
+
+void handleJPOS() {
+
+}
+
+void handleJNEG() {
+
+}
+
+void handleJNPOS() {
+
+}
+
+void handleJNNEG() {
+
+}
+
+void handleJUMP() {
+
 }
