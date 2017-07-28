@@ -361,10 +361,10 @@ void handleNWRITE() {
             printf("%d", register_u);
             break;
         case STACK_A_SIZE:
-            printf("%d", stack_a->size & UCHAR_MAX);
+            printf("%d", (stack_a->size < UCHAR_MAX) ? (int)stack_a->size : UCHAR_MAX);
             break;
         case STACK_E_SIZE:
-            printf("%d", stack_e->size & UCHAR_MAX);
+            printf("%d", (stack_e->size < UCHAR_MAX) ? (int)stack_e->size : UCHAR_MAX);
             break;
         case OVERFLOW:
             printf("%d", overflow_register);
@@ -381,52 +381,430 @@ void handleNWRITE() {
     }
 }
 
-/* completed to here */
-
 void handleCOPY() {
-
+    int data;
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!(stack_a->size))
+                interpret_error("stack a is empty!");
+            data = stack_char_top(stack_a);
+            break;
+        case STACK_E:
+            if (!(stack_e->size))
+                interpret_error("stack e is empty!");
+            data = stack_char_top(stack_e);
+            break;
+        case REGISTER_I:
+            data = register_i;
+            break;
+        case REGISTER_O:
+            data = register_o;
+            break;
+        case REGISTER_U:
+            data = register_u;
+            break;
+        case STACK_A_SIZE:
+            data = (stack_a->size < UCHAR_MAX) ? stack_a->size : UCHAR_MAX;
+            break;
+        case STACK_E_SIZE:
+            data = (stack_e->size < UCHAR_MAX) ? stack_e->size : UCHAR_MAX;
+            break;
+        case OVERFLOW:
+            data = overflow_register;
+            break;
+        case UNDERFLOW:
+            data = underflow_register;
+            break;
+        case IO_EOF:
+            data = eof_register;
+            break;
+        case NUMBER:
+            data = bytecode->arrp[programCounter++];
+            break;
+    }
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!stack_char_push(stack_a, data))
+                interpret_error("stack a too large, program out of memory!");
+            break;
+        case STACK_E:
+            if (!stack_char_push(stack_e, data))
+                interpret_error("stack e too large, program out of memory!");
+            break;
+        case REGISTER_I:
+            register_i = data;
+            break;
+        case REGISTER_O:
+            register_o = data;
+            break;
+        case REGISTER_U:
+            register_u = data;
+            break;
+    }
 }
 
 void handlePOP() {
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!(stack_a->size))
+                interpret_error("stack a is empty!");
+            stack_char_pop(stack_a);
+            break;
 
+        case STACK_E:
+            if (!(stack_e->size))
+                interpret_error("stack e is empty!");
+            stack_char_pop(stack_e);
+            break;
+    }
 }
 
 void handleDUP() {
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!(stack_a->size))
+                interpret_error("stack a is empty!");
+            if (!stack_char_push(stack_a, stack_char_top(stack_a)))
+                interpret_error("stack a too large, program out of memory!");
+            break;
 
+        case STACK_E:
+            if (!(stack_e->size))
+                interpret_error("stack e is empty!");
+            if (!stack_char_push(stack_e, stack_char_top(stack_e)))
+                interpret_error("stack e too large, program out of memory!");
+            break;
+    }
 }
 
 void handleSWAP() {
+    int temp;
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (stack_a->size < 2)
+                interpret_error("stack a needs at least 2 elements!");
+            temp = stack_a->arrp[stack_a->size - 2];
+            stack_a->arrp[stack_a->size - 2] = stack_a->arrp[stack_a->size - 1];
+            stack_a->arrp[stack_a->size - 1] = temp;
+            break;
 
+        case STACK_E:
+            if (stack_e->size < 2)
+                interpret_error("stack e needs at least 2 elements!");
+            temp = stack_e->arrp[stack_e->size - 2];
+            stack_e->arrp[stack_e->size - 2] = stack_e->arrp[stack_e->size - 1];
+            stack_e->arrp[stack_e->size - 1] = temp;
+            break;
+    }
 }
 
 void handleROTATE() {
+    int temp;
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (stack_a->size < 3)
+                interpret_error("stack a needs at least 3 elements!");
+            temp = stack_a->arrp[stack_a->size - 3];
+            stack_a->arrp[stack_a->size - 3] = stack_a->arrp[stack_a->size - 2];
+            stack_a->arrp[stack_a->size - 2] = stack_a->arrp[stack_a->size - 1];
+            stack_a->arrp[stack_a->size - 1] = temp;
+            break;
 
+        case STACK_E:
+            if (stack_e->size < 3)
+                interpret_error("stack e needs at least 3 elements!");
+            temp = stack_e->arrp[stack_e->size - 3];
+            stack_e->arrp[stack_e->size - 3] = stack_e->arrp[stack_e->size - 2];
+            stack_e->arrp[stack_e->size - 2] = stack_e->arrp[stack_e->size - 1];
+            stack_e->arrp[stack_e->size - 1] = temp;
+            break;
+    }
 }
 
-void handleJEQ() {
+/* completed to here */
 
+void handleJEQ() {
+    int source;
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!(stack_a->size))
+                interpret_error("stack a is empty!");
+            source = stack_char_top(stack_a);
+            break;
+        case STACK_E:
+            if (!(stack_e->size))
+                interpret_error("stack e is empty!");
+            source = stack_char_top(stack_e);
+            break;
+        case REGISTER_I:
+            source = register_i;
+            break;
+        case REGISTER_O:
+            source = register_o;
+            break;
+        case REGISTER_U:
+            source = register_u;
+            break;
+        case STACK_A_SIZE:
+            source = (stack_a->size < UCHAR_MAX) ? stack_a->size : UCHAR_MAX;
+            break;
+        case STACK_E_SIZE:
+            source = (stack_e->size < UCHAR_MAX) ? stack_e->size : UCHAR_MAX;
+            break;
+        case OVERFLOW:
+            source = overflow_register;
+            break;
+        case UNDERFLOW:
+            source = underflow_register;
+            break;
+        case IO_EOF:
+            source = eof_register;
+            break;
+    }
+    /* condition met */
+    if (!source) {
+        programCounter += sizeof(size_t);
+    }
+    else {
+        memcpy(&programCounter, bytecode->arrp + programCounter, sizeof(size_t));
+    }
 }
 
 void handleJNEQ() {
-
+    int source;
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!(stack_a->size))
+                interpret_error("stack a is empty!");
+            source = stack_char_top(stack_a);
+            break;
+        case STACK_E:
+            if (!(stack_e->size))
+                interpret_error("stack e is empty!");
+            source = stack_char_top(stack_e);
+            break;
+        case REGISTER_I:
+            source = register_i;
+            break;
+        case REGISTER_O:
+            source = register_o;
+            break;
+        case REGISTER_U:
+            source = register_u;
+            break;
+        case STACK_A_SIZE:
+            source = (stack_a->size < UCHAR_MAX) ? stack_a->size : UCHAR_MAX;
+            break;
+        case STACK_E_SIZE:
+            source = (stack_e->size < UCHAR_MAX) ? stack_e->size : UCHAR_MAX;
+            break;
+        case OVERFLOW:
+            source = overflow_register;
+            break;
+        case UNDERFLOW:
+            source = underflow_register;
+            break;
+        case IO_EOF:
+            source = eof_register;
+            break;
+    }
+    /* condition met */
+    if (source) {
+        programCounter += sizeof(size_t);
+    }
+    else {
+        memcpy(&programCounter, bytecode->arrp + programCounter, sizeof(size_t));
+    }
 }
 
 void handleJPOS() {
-
+    int source;
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!(stack_a->size))
+                interpret_error("stack a is empty!");
+            source = stack_char_top(stack_a);
+            break;
+        case STACK_E:
+            if (!(stack_e->size))
+                interpret_error("stack e is empty!");
+            source = stack_char_top(stack_e);
+            break;
+        case REGISTER_I:
+            source = register_i;
+            break;
+        case REGISTER_O:
+            source = register_o;
+            break;
+        case REGISTER_U:
+            source = register_u;
+            break;
+        case STACK_A_SIZE:
+            source = (stack_a->size < UCHAR_MAX) ? stack_a->size : UCHAR_MAX;
+            break;
+        case STACK_E_SIZE:
+            source = (stack_e->size < UCHAR_MAX) ? stack_e->size : UCHAR_MAX;
+            break;
+        case OVERFLOW:
+            source = overflow_register;
+            break;
+        case UNDERFLOW:
+            source = underflow_register;
+            break;
+        case IO_EOF:
+            source = eof_register;
+            break;
+    }
+    /* condition met */
+    if (!(source & 1 << 7) && source) {
+        programCounter += sizeof(size_t);
+    }
+    else {
+        memcpy(&programCounter, bytecode->arrp + programCounter, sizeof(size_t));
+    }
 }
 
 void handleJNEG() {
-
+    int source;
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!(stack_a->size))
+                interpret_error("stack a is empty!");
+            source = stack_char_top(stack_a);
+            break;
+        case STACK_E:
+            if (!(stack_e->size))
+                interpret_error("stack e is empty!");
+            source = stack_char_top(stack_e);
+            break;
+        case REGISTER_I:
+            source = register_i;
+            break;
+        case REGISTER_O:
+            source = register_o;
+            break;
+        case REGISTER_U:
+            source = register_u;
+            break;
+        case STACK_A_SIZE:
+            source = (stack_a->size < UCHAR_MAX) ? stack_a->size : UCHAR_MAX;
+            break;
+        case STACK_E_SIZE:
+            source = (stack_e->size < UCHAR_MAX) ? stack_e->size : UCHAR_MAX;
+            break;
+        case OVERFLOW:
+            source = overflow_register;
+            break;
+        case UNDERFLOW:
+            source = underflow_register;
+            break;
+        case IO_EOF:
+            source = eof_register;
+            break;
+    }
+    /* condition met */
+    if ((source & 1 << 7) && source) {
+        programCounter += sizeof(size_t);
+    }
+    else {
+        memcpy(&programCounter, bytecode->arrp + programCounter, sizeof(size_t));
+    }
 }
 
 void handleJNPOS() {
-
+    int source;
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!(stack_a->size))
+                interpret_error("stack a is empty!");
+            source = stack_char_top(stack_a);
+            break;
+        case STACK_E:
+            if (!(stack_e->size))
+                interpret_error("stack e is empty!");
+            source = stack_char_top(stack_e);
+            break;
+        case REGISTER_I:
+            source = register_i;
+            break;
+        case REGISTER_O:
+            source = register_o;
+            break;
+        case REGISTER_U:
+            source = register_u;
+            break;
+        case STACK_A_SIZE:
+            source = (stack_a->size < UCHAR_MAX) ? stack_a->size : UCHAR_MAX;
+            break;
+        case STACK_E_SIZE:
+            source = (stack_e->size < UCHAR_MAX) ? stack_e->size : UCHAR_MAX;
+            break;
+        case OVERFLOW:
+            source = overflow_register;
+            break;
+        case UNDERFLOW:
+            source = underflow_register;
+            break;
+        case IO_EOF:
+            source = eof_register;
+            break;
+    }
+    /* condition met */
+    if (source & 1 << 7) {
+        programCounter += sizeof(size_t);
+    }
+    else {
+        memcpy(&programCounter, bytecode->arrp + programCounter, sizeof(size_t));
+    }
 }
 
 void handleJNNEG() {
-
+    int source;
+    switch (bytecode->arrp[programCounter++]) {
+        case STACK_A:
+            if (!(stack_a->size))
+                interpret_error("stack a is empty!");
+            source = stack_char_top(stack_a);
+            break;
+        case STACK_E:
+            if (!(stack_e->size))
+                interpret_error("stack e is empty!");
+            source = stack_char_top(stack_e);
+            break;
+        case REGISTER_I:
+            source = register_i;
+            break;
+        case REGISTER_O:
+            source = register_o;
+            break;
+        case REGISTER_U:
+            source = register_u;
+            break;
+        case STACK_A_SIZE:
+            source = (stack_a->size < UCHAR_MAX) ? stack_a->size : UCHAR_MAX;
+            break;
+        case STACK_E_SIZE:
+            source = (stack_e->size < UCHAR_MAX) ? stack_e->size : UCHAR_MAX;
+            break;
+        case OVERFLOW:
+            source = overflow_register;
+            break;
+        case UNDERFLOW:
+            source = underflow_register;
+            break;
+        case IO_EOF:
+            source = eof_register;
+            break;
+    }
+    /* condition met */
+    if (!(source & 1 << 7)) {
+        programCounter += sizeof(size_t);
+    }
+    else {
+        memcpy(&programCounter, bytecode->arrp + programCounter, sizeof(size_t));
+    }
 }
 
 void handleJUMP() {
-
+    memcpy(&programCounter, bytecode->arrp + programCounter, sizeof(size_t));
 }

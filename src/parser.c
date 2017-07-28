@@ -105,6 +105,7 @@ void parseDataJuggling() {
         case VOWEL_E:
             bytecodePush(COPY);
             matchDestination(STACKS | REGISTERS | NUMBERS | MAGIC_NUMS);
+            matchDestination(STACKS | REGISTERS);
             break;
         case VOWEL_I:
             bytecodePush(SWAP);
@@ -119,8 +120,6 @@ void parseDataJuggling() {
             matchDestination(STACKS);
             break;
     }
-
-    matchDestination(STACKS | REGISTERS);
 }
 
 void parseIO() {
