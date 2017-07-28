@@ -11,5 +11,5 @@ To run a Vowels program, simply run `./vowels path/to/program` in the directory 
 ## Bug Reports
 The Vowels Interpreter is a new piece of software, and as such, may have numerous bugs. To report these, visit https://github.com/ethanhowell/vowels/issues/new or send an email to the maintaner at ethanhowell@users.noreply.github.com.
 
-# Using the Language
+## Using the Language
 The guide to the Vowels Programming Language can be found at https://github.com/ethanhowell/vowels/wiki.
