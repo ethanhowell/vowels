@@ -8,9 +8,6 @@
 #include "parser.h"
 #include "vm.h"
 
-#define VERNO .9
-
-
 extern FILE* currentFile;
 
 #endif
