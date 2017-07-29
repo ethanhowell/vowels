@@ -146,7 +146,7 @@ void handleADD() {
 
     result = stack_char_pop(destination) + stack_char_pop(destination);
     overflow_register = (result > UCHAR_MAX) ? result - UCHAR_MAX : 0;
-    stack_char_push(destination, result & UCHAR_MAX);
+    stack_char_push(destination, overflow_register ? UCHAR_MAX : result);
 }
 
 void handleSUBTRACT() {
@@ -169,7 +169,7 @@ void handleSUBTRACT() {
     result = stack_char_pop(destination);
     result = stack_char_pop(destination) - result;
     underflow_register = (result < 0) ? -result : 0;
-    stack_char_push(destination, result & UCHAR_MAX);
+    stack_char_push(destination, underflow_register ? 0 : result);
 }
 
 void handleAND() {
