@@ -27,11 +27,14 @@ debug: $(PROG_NAME)
 $(PROG_NAME): $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $(PROG_NAME)
 
-$(ODIR)/%.o: $(SRCDIR)/%.c $(DEPS)
+$(ODIR)/%.o: $(SRCDIR)/%.c $(DEPS) $(ODIR)
 	$(CC) -c $(CFLAGS) -o $@ $< -I$(DEPDIR)
 	@echo
 
+$(ODIR):
+	mkdir $@
+
 clean:
-	$(RM) $(ODIR)/*.o *~; $(RM) $(PROG_NAME)
+	$(RM) -r $(ODIR); $(RM) $(PROG_NAME)
 
 fresh: clean all
