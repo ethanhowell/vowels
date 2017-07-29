@@ -3,6 +3,9 @@
 FILE* currentFile = NULL;
 
 int main(int argc, char const *argv[]) {
+    /* turn off buffering on stdout (to prevent delays on program io routines) */
+    setvbuf(stdout, NULL, _IONBF, 0);
+
     if (argc < 2) {
        fputs("No input files. Quitting now.\n", stderr);
        exit(EXIT_FAILURE);
