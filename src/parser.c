@@ -231,10 +231,10 @@ void parseMagicNum() {
             bytecodePush(STACK_E_SIZE);
             break;
         case VOWEL_I:
-            bytecodePush(UNDERFLOW);
+            bytecodePush(OVERFLOW);
             break;
         case VOWEL_O:
-            bytecodePush(OVERFLOW);
+            bytecodePush(UNDERFLOW);
             break;
         case VOWEL_U:
             bytecodePush(IO_EOF);
