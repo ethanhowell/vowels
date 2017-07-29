@@ -13,3 +13,23 @@ The Vowels Interpreter is a new piece of software, and as such, may have numerou
 
 ## Using the Language
 The guide to the Vowels Programming Language can be found at https://github.com/ethanhowell/vowels/wiki.
+
+## Sample Program
+### HelloWorld.vw
+	ue
+	yeouo
+	euea
+	euai
+	euai
+	euoa
+	eaiu
+	eaao
+	eioo
+	euoa
+	euou
+	euai
+	euee
+	eaai
+	eeoe
+	eeee
+	y
