@@ -703,7 +703,7 @@ void handleJNEG() {
             break;
     }
     /* condition met */
-    if ((source & 1 << 7) && source) {
+    if (source & 1 << 7) {
         programCounter += sizeof(size_t);
     }
     else {
@@ -750,7 +750,7 @@ void handleJNPOS() {
             break;
     }
     /* condition met */
-    if (source & 1 << 7) {
+    if ((source & 1 << 7) || !source) {
         programCounter += sizeof(size_t);
     }
     else {
