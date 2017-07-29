@@ -1,5 +1,5 @@
 # Contributing
-Thanks for considering contributing to the development of the official Vowels Interpreter!
+Thanks for considering contributing to the development of the official Vowels Interpreter! Please review the [Code of Conduct](https://github.com/ethanhowell/vowels/blob/master/CODE_OF_CONDUCT.md) as all contributors will be expected to abide by it.
 
 ## Reporting a Bug
 The Vowels Interpreter is a new piece of software, and as such, may have numerous bugs. To report these, visit https://github.com/ethanhowell/vowels/issues and make sure that your bug has not already been reported. Then click "New Issue" to report rhe problem! Please include any necessary screenshots, console output, etc. Any bug reports are highly appreciated!
