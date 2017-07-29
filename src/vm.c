@@ -316,7 +316,7 @@ void handleSWRITE() {
         case STACK_A:
             if (!stack_char_push(stack_a, 0))
                 interpret_error("stack a too large, program out of memory!");
-            startOfString = stack_a->size;
+            startOfString = stack_a->size - 1;
             while (startOfString && stack_a->arrp[--startOfString]);
             fputs((char*)(stack_a->arrp + startOfString), stdout);
             stack_a->size = startOfString; /* pops of the just-printed string */
@@ -324,7 +324,7 @@ void handleSWRITE() {
         case STACK_E:
             if (!stack_char_push(stack_e, 0))
                 interpret_error("stack e too large, program out of memory!");
-            startOfString = stack_e->size;
+            startOfString = stack_e->size - 1;
             while (startOfString && stack_e->arrp[--startOfString]);
             fputs((char*)(stack_e->arrp + startOfString), stdout);
             stack_e->size = startOfString; /* pops of the just-printed string */
