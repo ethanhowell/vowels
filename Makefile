@@ -2,7 +2,7 @@ CC = gcc
 
 CBASEFLAGS = -ansi
 CDEBUGFLAGS = -g -Wall -Wpedantic -Wextra
-CPRODFLAGS = -O2 -march=native -s
+CPRODFLAGS = -O2 -s
 
 DEPDIR = include
 _DEPS = block.h bool.h error.h instructions.h main.h parser.h stack_block.h stack_char.h vector_char.h vm.h
