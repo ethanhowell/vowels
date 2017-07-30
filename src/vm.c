@@ -256,6 +256,8 @@ void handleXOR() {
 
 void handleREAD() {
     int c;
+    /* flush stdout so it doesn't get mangled with input */
+    fflush(stdout);
     if ((c = getchar()) == EOF) {
         eof_register = 1;
         c = 0;

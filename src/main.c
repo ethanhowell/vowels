@@ -3,8 +3,8 @@
 FILE* currentFile = NULL;
 
 int main(int argc, char const *argv[]) {
-    /* turn off buffering on stdout (to prevent delays on program io routines) */
-    setvbuf(stdout, NULL, _IONBF, 0);
+    /* install interrupt handler to flush stdout on ctrl+c */
+    signal(SIGINT, interruptHandler);
 
     if (argc < 2) {
        fputs("No input files. Quitting now.\n", stderr);
@@ -32,4 +32,9 @@ int main(int argc, char const *argv[]) {
     interpret();
 
     return EXIT_SUCCESS;
+}
+
+void interruptHandler(int flag) {
+    fflush(stdout);
+    exit(EXIT_SUCCESS);
 }
