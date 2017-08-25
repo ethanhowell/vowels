@@ -309,7 +309,8 @@ void handleCWRITE() {
             c = bytecode->arrp[programCounter++];
             break;
     }
-    putchar(c);
+    if (c != '\0')
+        putchar(c);
 }
 
 void handleSWRITE() {
