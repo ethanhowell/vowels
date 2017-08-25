@@ -50,7 +50,7 @@ bool stack_char_push(stack_char* self, unsigned char value) {
 
 unsigned char stack_char_top(const stack_char* self) {
 	assert (self->size > 0);
-	return self->arrp[self->size];
+	return self->arrp[self->size - 1];
 }
 
 unsigned char stack_char_pop(stack_char* self) {
