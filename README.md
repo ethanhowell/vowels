@@ -1,6 +1,6 @@
 # Vowels
 ## About
-Vowels is a new esoteric programming language where the only valid symbols are vowels, and all other characters are ignore. Therefore, it can be embedded into programs for other languages, creating multi-lingual programs. The Vowels interpreter is written in ANSI C, so it can run on nearly every platform ever made.
+Vowels is a new esoteric programming language where the only valid symbols are vowels, and all other characters are ignored. Therefore, it can be embedded into programs for other languages, creating multi-lingual programs. The Vowels interpreter is written in ANSI C, so it can run on nearly every platform ever made.
 
 ## Installation
 To install the Vowels interpreter, simply clone the repository (found at https://github.com/ethanhowell/vowels) and run `make`. This will create the _vowels_ binary in the current directory. Currently, there is no way to install the binary to a system location (like `/usr/local/bin`, so you will need to do that manually.
