@@ -55,7 +55,8 @@ unsigned char stack_char_top(const stack_char* self) {
 
 unsigned char stack_char_pop(stack_char* self) {
 	assert (self->size > 0);
-	return self->arrp[--(self->size)];
+	(self->size)--;
+	return self->arrp[self->size];
 }
 
 size_t stack_char_size(const stack_char* self) {

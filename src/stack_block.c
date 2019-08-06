@@ -55,7 +55,8 @@ Block stack_block_top(const stack_block* self) {
 
 Block stack_block_pop(stack_block* self) {
 	assert (self->size > 0);
-	return self->arrp[--(self->size)];
+	(self->size)--;
+	return self->arrp[self->size];
 }
 
 size_t stack_block_size(const stack_block* self) {
