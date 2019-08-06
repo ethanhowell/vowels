@@ -50,7 +50,7 @@ bool stack_block_push(stack_block* self, Block value) {
 
 Block stack_block_top(const stack_block* self) {
 	assert (self->size > 0);
-	return self->arrp[self->size];
+	return self->arrp[self->size - 1];
 }
 
 Block stack_block_pop(stack_block* self) {
