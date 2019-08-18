@@ -1,5 +1,7 @@
 #include "main.h"
 
+#define VOWELS_VERSION_NUMBER "0.9"
+
 FILE* currentFile = NULL;
 
 int main(int argc, char const *argv[]) {
@@ -12,8 +14,8 @@ int main(int argc, char const *argv[]) {
     }
 
     else if (argc == 2 && (!strcmp("--version", argv[1]) || !strcmp("-v", argv[1]))) {
-        puts("Vowels Interpreter (vowels) version 0.9 20170728");
-        puts("Copyright (C) 2017 Ethan J. Howell.");
+        puts("Vowels Interpreter (vowels) version " VOWELS_VERSION_NUMBER " " __DATE__);
+        puts("Copyright (C) Ethan J. Howell.");
         puts("This is free software (see license in source). There is NO warranty; \nnot even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.");
         putchar('\n');
         return EXIT_SUCCESS;
