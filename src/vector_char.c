@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <assert.h>
 
-#ifndef _SIZE_MAX_DEF
-#define _SIZE_MAX_DEF
-#define SIZE_MAX (~(size_t)0)
+#ifndef _VOWELS_SIZE_MAX_DEF
+#define _VOWELS_SIZE_MAX_DEF
+#define VOWELS_SIZE_MAX (~(size_t)0)
 #endif
 
 vector_char* vector_char_create(void) {
@@ -33,14 +33,14 @@ unsigned char vector_char_at(const vector_char* self, size_t index) {
 
 bool vector_char_expand(vector_char* self, size_t expansion) {
 	if (self->size + expansion > self->capacity) {
-		if (self->capacity < SIZE_MAX / 2) {
+		if (self->capacity < VOWELS_SIZE_MAX / 2) {
 			self->capacity *= 2;
 		}
-		else if (self->capacity == SIZE_MAX) {
+		else if (self->capacity == VOWELS_SIZE_MAX) {
 			return false;
 		}
 		else {
-			self->capacity = SIZE_MAX;
+			self->capacity = VOWELS_SIZE_MAX;
 		}
 		self->arrp = realloc(self->arrp, self->capacity);
 		if (self->arrp == NULL) {

@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#ifndef _SIZE_MAX_DEF
-#define _SIZE_MAX_DEF
-#define SIZE_MAX (~(size_t)0)
+#ifndef _VOWELS_SIZE_MAX_DEF
+#define _VOWELS_SIZE_MAX_DEF
+#define VOWELS_SIZE_MAX (~(size_t)0)
 #endif
 
 
@@ -30,14 +30,14 @@ stack_block* stack_block_create(void) {
 
 bool stack_block_push(stack_block* self, Block value) {
 	if (self->size >= self->capacity) {
-		if (self->capacity < SIZE_MAX / 2) {
+		if (self->capacity < VOWELS_SIZE_MAX / 2) {
 			self->capacity *= 2;
 		}
-		else if (self->capacity == SIZE_MAX) {
+		else if (self->capacity == VOWELS_SIZE_MAX) {
 			return false;
 		}
 		else {
-			self->capacity = SIZE_MAX;
+			self->capacity = VOWELS_SIZE_MAX;
 		}
 		self->arrp = realloc(self->arrp, self->capacity);
 		if (self->arrp == NULL) {
