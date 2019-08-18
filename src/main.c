@@ -4,13 +4,24 @@
 
 FILE* currentFile = NULL;
 
+void openInputFile(void) {
+    char inputFile[256] = {0};
+    puts("Please enter the name of the input file: ");
+
+    /* Reads in input file to inputFile string then tries to open a file with that name*/
+    while (!fgets(inputFile, sizeof(inputFile), stdin) || !(currentFile = fopen(strtok(inputFile, "\n"), "r"))) {
+        printf("Error reading filename %s. Does the file exist? Please try again.\n", inputFile);
+        puts("Please enter the name of the input file. Note - file name must be less than 255 characters: ");
+    }
+    return;
+}
+
 int main(int argc, char const *argv[]) {
     /* install interrupt handler to flush stdout on ctrl+c */
     signal(SIGINT, interruptHandler);
 
     if (argc < 2) {
-       fputs("No input files. Quitting now.\n", stderr);
-       exit(EXIT_FAILURE);
+        openInputFile();
     }
 
     else if (argc == 2 && (!strcmp("--version", argv[1]) || !strcmp("-v", argv[1]))) {
@@ -21,10 +32,11 @@ int main(int argc, char const *argv[]) {
         return EXIT_SUCCESS;
     }
 
-    currentFile = fopen(argv[1], "r");
-    if (!currentFile) {
-        fprintf(stderr, "File %s does not exist. Quitting now.\n", argv[1]);
-        exit(EXIT_FAILURE);
+    else {
+        if (!(currentFile = fopen(argv[1], "r"))) {
+            printf("File %s does not exist. Please try again.\n", argv[1]);
+            openInputFile();
+        }
     }
 
     parse();

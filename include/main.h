@@ -11,6 +11,9 @@
 
 extern FILE* currentFile;
 
+/* sets currentFile to the open file */
+void openInputFile(void);
+
 void interruptHandler(int flag);
 
 #endif
