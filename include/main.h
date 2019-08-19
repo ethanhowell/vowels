@@ -1,5 +1,11 @@
 #ifndef MAIN_H_
 #define MAIN_H_
+
+#ifndef STR
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
