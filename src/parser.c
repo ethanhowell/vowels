@@ -91,6 +91,9 @@ void parseArithmetic() {
         case VOWEL_Y:
             bytecodePush(XOR);
             break;
+
+        default:
+            parseError("There has been an error in the parser subroutine.");
     }
 
     matchDestination(STACKS);
@@ -119,6 +122,8 @@ void parseDataJuggling() {
             bytecodePush(ROTATE);
             matchDestination(STACKS);
             break;
+        default:
+            parseError("There has been an error in the parser subroutine.");
     }
 }
 
@@ -140,6 +145,8 @@ void parseIO() {
             bytecodePush(NWRITE);
             matchDestination(STACKS | REGISTERS | NUMBERS | MAGIC_NUMS);
             break;
+        default:
+            parseError("There has been an error in the parser subroutine.");
     }
 }
 
@@ -152,6 +159,8 @@ void parseBlock() {
         case VOWEL_E:
             currentBlock.type = WHILE;
             break;
+        default:
+            parseError("There has been an error in the parser subroutine.");
     }
     currentBlock.startIndex = bytecode->size;
     switch (match(VOWEL_A | VOWEL_E | VOWEL_I | VOWEL_O | VOWEL_U | VOWEL_Y)) {
@@ -173,6 +182,8 @@ void parseBlock() {
         case VOWEL_Y:
             bytecodePush(JNNEG);
             break;
+        default:
+            parseError("There has been an error in the parser subroutine.");
     }
     matchDestination(STACKS | REGISTERS | MAGIC_NUMS);
     if (!vector_char_expand(bytecode, sizeof(size_t)))
@@ -216,6 +227,8 @@ int parseNum() {
             case VOWEL_U:
                 parsedNum = parsedNum * 5 + 4;
                 break;
+            default:
+                parseError("There has been an error in the parser subroutine.");
         }
     }
     bytecodePush(parsedNum &= UCHAR_MAX);
@@ -239,6 +252,8 @@ void parseMagicNum() {
         case VOWEL_U:
             bytecodePush(IO_EOF);
             break;
+        default:
+            parseError("There has been an error in the parser subroutine.");
     }
 }
 
@@ -281,19 +296,28 @@ Vowel match(int flag) {
         switch (v) {
             case VOWEL_EOF:
                 parseError("unexpected end-of-file.");
+                break;
             case VOWEL_A:
                 parseError("unexpected vowel 'A'.");
+                break;
             case VOWEL_E:
                 parseError("unexpected vowel 'E'.");
+                break;
             case VOWEL_I:
                 parseError("unexpected vowel 'I'.");
+                break;
             case VOWEL_O:
                 parseError("unexpected vowel 'O'.");
+                break;
             case VOWEL_U:
                 parseError("unexpected vowel 'U'.");
+                break;
             case VOWEL_Y:
                 parseError("unexpected vowel 'Y'.");
+                break;
         }
+        /* note: control should never return from parseError */
+        return (Vowel)NULL;
     }
 }
 
@@ -347,5 +371,7 @@ void matchDestination(int flag) {
                     parseError("unexpected number destination argument.");
             }
             break;
+        default:
+            parseError("There has been an error in the parser subroutine.");
     }
 }
