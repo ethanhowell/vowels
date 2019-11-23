@@ -1,29 +1,15 @@
 #include "main.h"
 
-#define VOWELS_VERSION_NUMBER "0.9"
-#define INPUT_FILE_SIZE 256
-
 FILE* currentFile = NULL;
 
-void openInputFile(void) {
-    /* to make things easy on ourselves 256 is the max file size */
-    char inputFile[INPUT_FILE_SIZE] = {0};
-    puts("Please enter the name of the input file: ");
-
-    /* Reads in input file to inputFile string then tries to open a file with that name*/
-    while (!fgets(inputFile, INPUT_FILE_SIZE, stdin) || !(currentFile = fopen(strtok(inputFile, "\n"), "r"))) {
-        printf("Error reading file %s. Does the file exist? Please try again.\n", inputFile);
-        puts("Please enter the name of the input file. Note - file name must be less than " STR(INPUT_FILE_SIZE) " characters: ");
-    }
-    return;
-}
-
 int main(int argc, char const *argv[]) {
+    int usingStdin = FALSE;
     /* install interrupt handler to flush stdout on ctrl+c */
     signal(SIGINT, interruptHandler);
 
     if (argc < 2) {
-        openInputFile();
+        currentFile = stdin;
+        usingStdin = TRUE;
     }
 
     else if (argc == 2 && (!strcmp("--version", argv[1]) || !strcmp("-v", argv[1]))) {
@@ -37,12 +23,13 @@ int main(int argc, char const *argv[]) {
     else {
         if (!(currentFile = fopen(argv[1], "r"))) {
             printf("Error reading file %s. Does the file exist? Please try again.\n", argv[1]);
-            openInputFile();
+            return EXIT_FAILURE;
         }
     }
 
     parse();
-    fclose(currentFile);
+    
+    if (!usingStdin) fclose(currentFile);
     currentFile = NULL;
 
     interpret();

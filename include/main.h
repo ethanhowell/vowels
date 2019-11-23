@@ -1,6 +1,11 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
+#define VOWELS_VERSION_NUMBER "0.9"
+#define INPUT_FILE_SIZE 256
+#define TRUE 1
+#define FALSE 0
+
 #ifndef STR
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
@@ -16,9 +21,6 @@
 #include "vm.h"
 
 extern FILE* currentFile;
-
-/* sets currentFile to the open file */
-void openInputFile(void);
 
 void interruptHandler(int flag);
 
