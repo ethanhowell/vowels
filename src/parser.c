@@ -8,29 +8,32 @@ static stack_block* blockStack = NULL;
 static size_t currentLine = 1, currentChar = 0;
 static int lastCharRead;
 
+static FILE* fileToParse;
+
 void parseError(const char* message) {
     if (bytecode) vector_char_destroy(bytecode);
     if (blockStack) stack_block_destroy(blockStack);
-    fclose(currentFile);
+    fclose(fileToParse);
 
     syntax_error(currentLine, currentChar, message);
 }
 
 
-void parse() {
+void parseFile(FILE* file) {
     bytecode = vector_char_create();
     blockStack = stack_block_create();
+    fileToParse = file;
     if (!bytecode || !blockStack) {
         parseError("out of memory -- program size too large.");
     }
 
     /* ignore shebang line (if it exists) */
-    if ((lastCharRead = getc(currentFile)) == '#' &&
-        (lastCharRead = getc(currentFile) == '!')) {
-        while (getc(currentFile) != '\n');
+    if ((lastCharRead = getc(fileToParse)) == '#' &&
+        (lastCharRead = getc(fileToParse) == '!')) {
+        while (getc(fileToParse) != '\n');
     }
     else {
-        ungetc(lastCharRead, currentFile);
+        ungetc(lastCharRead, fileToParse);
     }
 
     while (true) {
@@ -259,7 +262,7 @@ void parseMagicNum() {
 
 Vowel getNextVowel() {
     int c;
-    while ((lastCharRead = c = getc(currentFile)) != EOF) {
+    while ((lastCharRead = c = getc(fileToParse)) != EOF) {
         currentChar++;
         switch(c) {
             case 'A':
@@ -361,7 +364,7 @@ void matchDestination(int flag) {
                 parseMagicNum();
             }
             else {
-                ungetc(lastCharRead, currentFile);
+                ungetc(lastCharRead, fileToParse);
                 bytecodePush(NUMBER);
                 if (flag & NUMBERS)
                     parseNum();

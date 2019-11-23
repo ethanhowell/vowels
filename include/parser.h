@@ -29,7 +29,7 @@ typedef enum {
 	MAGIC_NUMS = 1 << 5
 } Destination;
 
-void parse(void);
+void parseFile(FILE* file);
 
 void parseError(const char* message);
 

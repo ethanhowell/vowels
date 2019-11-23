@@ -4,6 +4,7 @@ FILE* currentFile = NULL;
 
 int main(int argc, char const *argv[]) {
     int usingStdin = FALSE;
+    FILE* currentFile;
     /* install interrupt handler to flush stdout on ctrl+c */
     signal(SIGINT, interruptHandler);
 
@@ -27,7 +28,7 @@ int main(int argc, char const *argv[]) {
         }
     }
 
-    parse();
+    parseFile(currentFile);
     
     if (!usingStdin) fclose(currentFile);
     currentFile = NULL;

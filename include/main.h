@@ -20,8 +20,6 @@
 #include "parser.h"
 #include "vm.h"
 
-extern FILE* currentFile;
-
 void interruptHandler(int flag);
 
 #endif
