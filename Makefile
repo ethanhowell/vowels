@@ -16,13 +16,17 @@ OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 PROG_NAME = vowels
 
-.PHONY: clean fresh all debug
+.PHONY: clean fresh all debug web
 
 all: CFLAGS = $(CBASEFLAGS) $(CPRODFLAGS)
 all: $(PROG_NAME)
 
 debug: CFLAGS = $(CBASEFLAGS) $(CDEBUGFLAGS)
 debug: $(PROG_NAME)
+
+web: CC = emcc
+web: PROG_NAME = docs/index.html
+web: all
 
 $(PROG_NAME): $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $(PROG_NAME)
