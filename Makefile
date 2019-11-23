@@ -25,7 +25,9 @@ debug: CFLAGS = $(CBASEFLAGS) $(CDEBUGFLAGS)
 debug: $(PROG_NAME)
 
 web: CC = emcc
-web: PROG_NAME = docs/index.html
+web: PROG_NAME = docs/vowels.wasm
+web: ODIR = docs/obj
+web: OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 web: all
 
 $(PROG_NAME): $(OBJ)
