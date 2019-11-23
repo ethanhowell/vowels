@@ -1,5 +1,4 @@
 obj
 *.o
 vowels
-vowels.*
 *.vw
