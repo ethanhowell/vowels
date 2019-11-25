@@ -3,14 +3,14 @@
 FILE* currentFile = NULL;
 
 int main(int argc, char const *argv[]) {
-    int usingStdin = FALSE;
+    int usingStdin = false;
     FILE* currentFile;
     /* install interrupt handler to flush stdout on ctrl+c */
     signal(SIGINT, interruptHandler);
 
     if (argc < 2) {
         currentFile = stdin;
-        usingStdin = TRUE;
+        usingStdin = true;
     }
 
     else if (argc == 2 && (!strcmp("--version", argv[1]) || !strcmp("-v", argv[1]))) {
@@ -39,6 +39,10 @@ int main(int argc, char const *argv[]) {
 }
 
 void interruptHandler(int flag) {
-    fflush(stdout);
-    exit(EXIT_SUCCESS);
+    switch (flag) {
+        case SIGINT:
+            fflush(stdout);
+            exit(EXIT_SUCCESS);
+            break;
+    }
 }

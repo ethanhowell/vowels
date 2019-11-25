@@ -3,8 +3,6 @@
 
 #define VOWELS_VERSION_NUMBER "0.9"
 #define INPUT_FILE_SIZE 256
-#define TRUE 1
-#define FALSE 0
 
 #ifndef STR
 #define STR_HELPER(x) #x

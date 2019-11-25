@@ -30,6 +30,12 @@ typedef enum {
 } Destination;
 
 void parseFile(FILE* file);
+void parseString(char* string);
+
+void parse();
+
+int getCharacter();
+void ungetCharacter(int c);
 
 void parseError(const char* message);
 

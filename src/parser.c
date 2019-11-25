@@ -5,10 +5,11 @@
 vector_char* bytecode = NULL;
 static stack_block* blockStack = NULL;
 
-static size_t currentLine = 1, currentChar = 0;
+static size_t currentLine = 1, currentChar = 0, stringCounter = 0;
 static int lastCharRead;
 
-static FILE* fileToParse;
+static FILE* fileToParse = NULL;
+static char* stringToParse = NULL;
 
 void parseError(const char* message) {
     if (bytecode) vector_char_destroy(bytecode);
@@ -18,6 +19,34 @@ void parseError(const char* message) {
     syntax_error(currentLine, currentChar, message);
 }
 
+int getCharacter() {
+    int c;
+    if (fileToParse) {
+        c = getc(fileToParse);
+    }
+    else {
+        if (!(c = stringToParse[stringCounter++])) {
+            c = EOF;
+        }
+    }
+    currentChar++;
+    return c;
+}
+
+void ungetCharacter(int c) {
+    if (fileToParse) {
+        ungetc(c, fileToParse);
+    }
+    else {
+        stringCounter--;
+    }
+    currentChar--;
+}
+
+void parseString(char* string) {
+    stringToParse = string;
+    parse();
+}
 
 void parseFile(FILE* file) {
     bytecode = vector_char_create();
@@ -36,6 +65,10 @@ void parseFile(FILE* file) {
         ungetc(lastCharRead, fileToParse);
     }
 
+    parse();
+}
+
+void parse() {
     while (true) {
         switch (getNextVowel()) {
             case VOWEL_A:
@@ -64,6 +97,8 @@ void parseFile(FILE* file) {
                     parseError ("expected end of block sequence.");
                 }
                 stack_block_destroy(blockStack);
+                fileToParse = NULL;
+                stringToParse = NULL;
                 return;
         }
     }
@@ -262,8 +297,7 @@ void parseMagicNum() {
 
 Vowel getNextVowel() {
     int c;
-    while ((lastCharRead = c = getc(fileToParse)) != EOF) {
-        currentChar++;
+    while ((lastCharRead = c = getCharacter()) != EOF) {
         switch(c) {
             case 'A':
             case 'a':
